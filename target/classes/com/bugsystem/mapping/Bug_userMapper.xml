@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bugsystem.dao.Bug_userMapper">
+  <resultMap id="BaseResultMap" type="com.bugsystem.domain.Bug_user">
+    <id column="bug_userid" jdbcType="INTEGER" property="bugUserid" />
+    <result column="bug_id" jdbcType="INTEGER" property="bugId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    bug_userid, bug_id, user_id, create_time
+  </sql>
+  <insert id="insertSelective" parameterType="com.bugsystem.domain.Bug_user">
+    insert into bug_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="bugUserid != null">
+        bug_userid,
+      </if>
+      <if test="bugId != null">
+        bug_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="bugUserid != null">
+        #{bugUserid,jdbcType=INTEGER},
+      </if>
+      <if test="bugId != null">
+        #{bugId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bugsystem.domain.Bug_user">
+    update bug_user
+    <set>
+      <if test="bugId != null">
+        bug_id = #{bugId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where bug_userid = #{bugUserid,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bugsystem.dao.ProjectMapper">
+  <resultMap id="BaseResultMap" type="com.bugsystem.domain.Project">
+    <id column="project_id" jdbcType="INTEGER" property="projectId" />
+    <result column="name" jdbcType="CHAR" property="name" />
+    <result column="create_user" jdbcType="CHAR" property="createUser" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="document_id" jdbcType="INTEGER" property="documentId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.bugsystem.domain.Project">
+    <result column="descr" jdbcType="LONGVARCHAR" property="descr" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    project_id, name, create_user, type, document_id, create_time
+  </sql>
+  <sql id="Blob_Column_List">
+    descr
+  </sql>
+  <insert id="insertSelective" parameterType="com.bugsystem.domain.Project">
+    insert into project
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="projectId != null">
+        project_id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="createUser != null">
+        create_user,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="documentId != null">
+        document_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="descr != null">
+        descr,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="projectId != null">
+        #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=CHAR},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=CHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="documentId != null">
+        #{documentId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="descr != null">
+        #{descr,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bugsystem.domain.Project">
+    update project
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=CHAR},
+      </if>
+      <if test="createUser != null">
+        create_user = #{createUser,jdbcType=CHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="documentId != null">
+        document_id = #{documentId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="descr != null">
+        descr = #{descr,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where project_id = #{projectId,jdbcType=INTEGER}
+  </update>
+  <select id="selectAllProject" resultMap="com.bugsystem.dao.ProjectMapper.ResultMapWithBLOBs">
+  	select * from project
+  </select>
+  <select id="selectProjectByUserName" resultMap="com.bugsystem.dao.ProjectMapper.ResultMapWithBLOBs">
+  	select * from project where create_user=#{userName}
+  </select>
+  
+</mapper>

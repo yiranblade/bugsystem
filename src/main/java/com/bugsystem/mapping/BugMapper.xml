@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bugsystem.dao.BugMapper">
+  <resultMap id="BaseResultMap" type="com.bugsystem.domain.Bug">
+    <id column="bug_id" jdbcType="INTEGER" property="bugId" />
+    <result column="bug_name" jdbcType="CHAR" property="bugName" />
+    <result column="detail" jdbcType="CHAR" property="detail" />
+    <result column="project_id" jdbcType="INTEGER" property="projectId" />
+    <result column="level" jdbcType="INTEGER" property="level" />
+    <result column="finished_status" jdbcType="INTEGER" property="finishedStatus" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    bug_id, bug_name, detail, project_id, level, finished_status, create_time
+  </sql>
+  <insert id="insertSelective" parameterType="com.bugsystem.domain.Bug">
+    insert into bug
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="bugId != null">
+        bug_id,
+      </if>
+      <if test="bugName != null">
+        bug_name,
+      </if>
+      <if test="detail != null">
+        detail,
+      </if>
+      <if test="projectId != null">
+        project_id,
+      </if>
+      <if test="level != null">
+        level,
+      </if>
+      <if test="finishedStatus != null">
+        finished_status,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="bugId != null">
+        #{bugId,jdbcType=INTEGER},
+      </if>
+      <if test="bugName != null">
+        #{bugName,jdbcType=CHAR},
+      </if>
+      <if test="detail != null">
+        #{detail,jdbcType=CHAR},
+      </if>
+      <if test="projectId != null">
+        #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="finishedStatus != null">
+        #{finishedStatus,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bugsystem.domain.Bug">
+    update bug
+    <set>
+      <if test="bugName != null">
+        bug_name = #{bugName,jdbcType=CHAR},
+      </if>
+      <if test="detail != null">
+        detail = #{detail,jdbcType=CHAR},
+      </if>
+      <if test="projectId != null">
+        project_id = #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="level != null">
+        level = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="finishedStatus != null">
+        finished_status = #{finishedStatus,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where bug_id = #{bugId,jdbcType=INTEGER}
+  </update>
+  <select id="getAllBug" resultMap="com.bugsystem.dao.BugMapper.BaseResultMap">
+  	select * from bug
+  	
+  </select>
+  <select id="getBugByUserId" resultMap="com.bugsystem.dao.BugMapper.BaseResultMap">
+  	select *  from bug where bug_id in (select bug_id from bug_user where user_id=#{userId}) 
+  </select>
+  <select id="getBugByProjectId" resultMap="com.bugsystem.dao.BugMapper.BaseResultMap">
+  	select * from bug where project_id=#{projectId}
+  </select>
+</mapper>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bugsystem.dao.DocumentMapper">
+  <resultMap id="BaseResultMap" type="com.bugsystem.domain.Document">
+    <id column="docum_id" jdbcType="INTEGER" property="documId" />
+    <result column="docum_url" jdbcType="CHAR" property="documUrl" />
+    <result column="docum_type" jdbcType="CHAR" property="documType" />
+    <result column="project_id" jdbcType="INTEGER" property="projectId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    docum_id, docum_url, docum_type, project_id, create_time
+  </sql>
+  <insert id="insertSelective" parameterType="com.bugsystem.domain.Document">
+    insert into document
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="documId != null">
+        docum_id,
+      </if>
+      <if test="documUrl != null">
+        docum_url,
+      </if>
+      <if test="documType != null">
+        docum_type,
+      </if>
+      <if test="projectId != null">
+        project_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="documId != null">
+        #{documId,jdbcType=INTEGER},
+      </if>
+      <if test="documUrl != null">
+        #{documUrl,jdbcType=CHAR},
+      </if>
+      <if test="documType != null">
+        #{documType,jdbcType=CHAR},
+      </if>
+      <if test="projectId != null">
+        #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bugsystem.domain.Document">
+    update document
+    <set>
+      <if test="documUrl != null">
+        docum_url = #{documUrl,jdbcType=CHAR},
+      </if>
+      <if test="documType != null">
+        docum_type = #{documType,jdbcType=CHAR},
+      </if>
+      <if test="projectId != null">
+        project_id = #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where docum_id = #{documId,jdbcType=INTEGER}
+  </update>
+  <select id="getAllDocuments" resultMap="com.bugsystem.dao.DocumentMapper.BaseResultMap">
+  	 select * from document
+  </select>
+  <select id="getDocumentByProjectId" resultMap="com.bugsystem.dao.DocumentMapper.BaseResultMap">
+  	select * from document where project_id=#{projectId}
+  </select>
+</mapper>

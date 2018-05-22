@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+">
+	<tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="Add*" propagation="REQUIRED" />
+			<tx:method name="User*" propagation="REQUIRED" />
+			<tx:method name="Save*" propagation="REQUIRED" />
+			<tx:method name="Update*" propagation="REQUIRED" />
+			<tx:method name="Modify*" propagation="REQUIRED" />
+			<tx:method name="Wdit*" propagation="REQUIRED" />
+			<tx:method name="Insert*" propagation="REQUIRED" />
+			<tx:method name="Delete*" propagation="REQUIRED" />
+			<tx:method name="Remove*" propagation="REQUIRED" />
+			<tx:method name="Register*" propagation="REQUIRED" />
+			<tx:method name="Repair" propagation="REQUIRED" />
+			<tx:method name="Order*" propagation="REQUIRED" />
+			<tx:method name="Get*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="Find*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="Load*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="Search*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="Datagrid*" propagation="REQUIRED"
+				read-only="true" />
+			<tx:method name="*" propagation="REQUIRED" read-only="false" />
+		</tx:attributes>
+	</tx:advice>
+	<aop:config>
+		<aop:pointcut id="transactionPointcut"
+			expression="execution(* com.bugsystem.serviceimpl..*Impl.*(..))" />
+		<aop:advisor pointcut-ref="transactionPointcut"
+			advice-ref="transactionAdvice" />
+	</aop:config>
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+  		    <!-- p:host="smtp.exmail.qq.com"
+  	 		p:port="465" 		   
+  	        p:username="781029434@qq.com"
+  		   p:password="hdkgrwiafwqrbfcg"-->
+  		<property name="host" value="smtp.qq.com"/>
+        <!-- 邮箱名 -->
+        <property name="username" value="291305029@qq.com"/>
+        <!-- 独立密码 -->
+        <property name="password" value="rnpvmrkdarmcbgbd"/>
+        <property name="javaMailProperties">    
+           <props>    
+               <!-- 开启身份认证 -->
+               <prop key="mail.smtp.auth">true</prop>    
+               <!-- 使用默认端口 -->
+               <prop key="mail.smtp.starttls.enable">true</prop>
+               <prop key="mail.smtp.ssl.enable">true</prop>
+               <prop key="mail.smtp.socketFactory.class">"javax.net.ssl.SSLSocketFactory"</prop>
+               <!-- 设置超时 -->
+               <prop key="mail.smtp.timeout">25000</prop>    
+           </props>
+         </property>    	    
+	</bean>	  	
+	<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+    	<property name="corePoolSize" value="20"/>
+		<property name="maxPoolSize" value="100"/>    	
+    </bean>	
+</beans>
